@@ -9,7 +9,7 @@
             </div>
             <?php echo form_open('presensi/simpanDataRapat', ['class' => 'formSimpanRapat']) ?>
                 <div class="pesan" style="display: none;">
-                
+
                 </div>
                 <div class="modal-body">
                     <div class="form-group row">
@@ -91,6 +91,9 @@
                                 text: response.sukses
                             });
                             $('#modalTambahRapat').modal('hide');
+                            setTimeout(function(){
+                                location.reload();
+                            }, 2000);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError){
