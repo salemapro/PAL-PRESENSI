@@ -12,19 +12,16 @@ class Presensi extends CI_Controller {
 		$this->load->helper('url');
 		$this->load->model('M_presensi');
 		$this->load->model('M_auth');
-		// $this->load->model('M_hadir');
-		// $this->load->model('M_rapat');
-		if (!$this->M_auth->current_user()) {
-			redirect('auth/login');
-		}
+		$this->load->model('M_hadir');
+		// if (!$this->M_auth->current_user()) {
+		// 	redirect('Login/cek_login');
+		// }
 	}
 
 	public function index()
 	{
 		$data['presensi'] = $this->M_presensi->get_data();
-		$this->load->view('v_header');
-		$this->load->view('v_daftarRapat',$data);
-		// $this->load->view('v_footer');
+		$this->load->view('v_presensi',$data);
 	}
 
 	public function daftarRapat()
@@ -32,7 +29,6 @@ class Presensi extends CI_Controller {
 		$data['presensi'] = $this->M_presensi->get_data();
 		$this->load->view('v_header');
 		$this->load->view('v_daftarRapat',$data);
-		// $this->load->view('v_footer');
 	}
 
 	public function daftarHadir()
@@ -40,7 +36,6 @@ class Presensi extends CI_Controller {
 		$data['presensi'] = $this->M_presensi->get_data();
 		$this->load->view('v_header');
 		$this->load->view('v_daftarHadir',$data);
-		// $this->load->view('v_footer');
 	}
 
 	public function get_presensi()
@@ -92,6 +87,16 @@ class Presensi extends CI_Controller {
 				];
 			}
 
+			echo json_encode($msg);
+		}
+	}
+
+	public function formLogin()
+	{
+		if($this->input->is_ajax_request() == true){
+			$msg = [
+				'sukses' => $this->load->view('v_modalLogin', '', true)
+			];
 			echo json_encode($msg);
 		}
 	}

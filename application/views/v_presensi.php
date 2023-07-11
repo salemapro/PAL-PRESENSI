@@ -66,7 +66,7 @@
                                 <i class="fas fa-user"></i>
                                 Sign In
                             </a> -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formLogin">
+                            <button class="btn btn-primary" id="tombolLogin">
                                 <i class="fas fa-user"></i>
                                 Sign In
                             </button>
@@ -76,8 +76,8 @@
             </nav>
 
             <!-- LOGIN FORM-->
-            <div class="modal fade" id="formLogin" data-backdrop="static" data-keyboard="false">
-                <div class="modal-dialog modal-dialog-centered" style="max-width: 350px;">
+            <!-- <div class="modal fade" id="formLogin" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered" style="max-width: 350px;"> -->
                     <!-- <form role="form" action="<?php echo base_url('presensi/login')?>">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -103,7 +103,7 @@
                             </div>
                         </div>
                     </form> -->
-                    <div class="modal-content">
+                    <!-- <div class="modal-content">
                         <div class="card-body login-card-body">
                             <h4><b>Login as Administrator</b></h4>
                             <br>
@@ -143,7 +143,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="content-wrapper">
                 <section class="content-header">
@@ -255,20 +255,29 @@
                 </div>
             </footer>
         </div>
+        <div class="viewmodal" style="display: none;">
+                
+        </div>
         
         <!-- jQuery -->
         <script src="<?php echo base_url('assets/template')?>/plugins/jquery/jquery.min.js"></script>
+
         <!-- Bootstrap 4 -->
         <script src="<?php echo base_url('assets/template')?>/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
         <!-- jsGrid -->
         <script src="<?php echo base_url('assets/template')?>/plugins/jsgrid/demos/db.js"></script>
         <script src="<?php echo base_url('assets/template')?>/plugins/jsgrid/jsgrid.min.js"></script>
+
         <!-- SweetAlert2 -->
         <script src="<?php echo base_url('assets/template')?>/plugins/sweetalert2/sweetalert2.min.js"></script>
+
         <!-- Toastr -->
         <script src="<?php echo base_url('assets/template')?>/plugins/toastr/toastr.min.js"></script>
+
         <!-- AdminLTE App -->
         <script src="<?php echo base_url('assets/template')?>/dist/js/adminlte.min.js"></script>
+
         <!-- AdminLTE for demo purposes -->
         <script src="<?php echo base_url('assets/template')?>/dist/js/demo.js"></script>
 
@@ -276,6 +285,22 @@
         <script type="text/javascript">
             $(document).ready(function(){
                 $('#divInput').hide();
+
+                $('#tombolLogin').click(function(e) {
+                    $.ajax({
+                        url: "<?php echo base_url('presensi/formLogin')?>",
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.sukses){
+                                $('.viewmodal').html(response.sukses).show();
+                                $('#modalFormLogin').on('shown.bs.modal', function(e){
+                                    $('inputUser').focus();
+                                })
+                                $('#modalFormLogin').modal('show');
+                            }
+                        }
+                    });
+                });
             });
 
             function openForm(){
