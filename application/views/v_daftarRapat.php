@@ -41,32 +41,28 @@
                                             foreach($presensi as $row)
                                             {
                                         ?>
-                                                <tr>
-                                                    <td align="center"><?php echo $row->id ?></td>
-                                                    <td>
-                                                        <b><?php echo $row->judulRapat ?></b><br><hr>
-                                                        Link : <?php echo $row->link ?><br>
-                                                        id : <?php echo $row->idZoom ?>
-                                                    </td>
-                                                    <td align="center"><?php echo $row->tempat ?></td>
-                                                    <td align="center"><?php echo $row->tanggal,"  ", $row->waktu ?></td>
-                                                    <td class="col-md-0" align="center">
-                                                        <!-- <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                                            <input type="checkbox" class="custom-control-input" id="customSwitch3">
-                                                        </div> -->
-                                                        <input type="checkbox" name="my-checkbox" data-bootstrap-switch data-off-color="danger" data-on-color="success" unchecked>
-                                                        <!-- <input type="checkbox" class="" name="my-checkbox" role="switch" data-bootstrap-switch data-off-color="danger" data-on-color="success" unchecked onchange="getStatusChanged(this, $id);"> -->
-                                                    </td>
-                                                    <td nowrap>
-                                                        <button title="Update" onclick="getRapat($id)" class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal"> 
+                                            <tr>
+                                                <td align="center"><?php echo $row->id ?></td>
+                                                <td>
+                                                    <b><?php echo $row->judulRapat ?></b><br><hr>
+                                                    Link : <?php echo $row->link ?><br>
+                                                    id : <?php echo $row->idZoom ?>
+                                                </td>
+                                                <td align="center"><?php echo $row->tempat ?></td>
+                                                <td align="center"><?php echo $row->tanggal,"  ", $row->waktu ?></td>
+                                                <td class="col-md-0" align="center">
+                                                    <input type="checkbox" name="my-checkbox" data-bootstrap-switch data-off-color="danger" data-on-color="success" unchecked>
+                                                </td>
+                                                <td nowrap>
+                                                    <button title="Update" onclick="getRapat($id)" class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal"> 
                                                             <i class="fa fa-edit"></i> 
-                                                        </button>
-                                                        &nbsp; 
-                                                        <button title="Delete" onclick="deleteConfirm($id)" class="btn btn-sm btn-danger"> 
-                                                            <i class="fa fa-trash"></i> 
-                                                        </button>
-                                                    </td>
-                                                </tr>
+                                                    </button>
+                                                    &nbsp; 
+                                                    <button title="Delete" onclick="deleteConfirm($id)" class="btn btn-sm btn-danger"> 
+                                                        <i class="fa fa-trash"></i> 
+                                                    </button>
+                                                </td>
+                                            </tr>
                                         <?php
                                             }
                                         ?>
@@ -125,21 +121,7 @@
         <!-- SCRIPT -->
         <script type="text/javascript">
         $(document).ready(function(){
-            // table = $('#example').DataTable({
-            //     "responsive": true,
-            //     "autoWidth": false,
-            //     "destroy": true,
-            //     "processing": true,
-            //     "serverSide": true,
-            //     "order": true,
 
-            //     "ajax": {
-            //         "url": "<?php echo base_url('presensi/get_data') ?>",
-            //         "type": "POST"
-            //     },
-
-
-            // });
             $(function () {
                 $("#example1").DataTable({
                     "responsive": true,

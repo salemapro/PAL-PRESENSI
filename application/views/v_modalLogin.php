@@ -2,7 +2,9 @@
         <div class="modal-dialog modal-dialog-centered" style="max-width: 350px;">
             <div class="modal-content">
                 <div class="card-body login-card-body">
-                    <h4><b>Login as Administrator</b></h4>
+                    <center>
+                        <h4><b>Login as Administrator</b></h4>
+                    </center>
                     <br>
                     <?php echo form_open('login/cek_login', ['class' => 'formLogin']) ?>
                         <div class="form-group">
@@ -87,73 +89,8 @@
                         alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
                     }
                 });
+                
                 return false;
-                // if(username.length == ""){
-
-                //     Swal.fire({
-                //         icon: 'warning',
-                //         title: 'Oops...',
-                //         text: 'Username Wajib diisi !'
-                //     });
-
-                // } else if (password.length == ""){
-
-                //     Swal.fire({
-
-                //         icon: 'warning',
-                //         title: 'Oops...',
-                //         text: 'Password Wajib diisi'
-                //     });
-
-                // } else {
-
-                //     $.ajax({
-                //         type: "post",
-                //         url: $(this).attr('action'),
-                //         // data: {
-                //         //     username: username,
-                //         //     password: password
-                //         // },
-                //         data: $(this).serialize(),
-
-                //         success: function(response){
-
-                //             if (response == "success"){
-
-                //                 Swal.fire({
-                //                     type: 'success',
-                //                     title: 'Login Berhasil',
-                //                     showCancelButton: false,
-                //                     showConfirmButton: false
-                //                 })
-    
-                //                 .then (function(){
-                //                     window.location.href = "<?php echo base_url('presensi/daftarRapat') ?>";
-                //                 });
-
-                //             } else {
-
-                //                 Swal.fire({
-                //                     icon: 'error',
-                //                     title: 'Login Gagal',
-                //                     text: 'silahkan coba lagi'
-                //                 });
-                //             }
-
-                //             console.log(response);
-                //         },
-
-                //         error:function(response){
-                //             Swal.fire({
-                //                 icon: 'error',
-                //                 title: 'Oops',
-                //                 text: 'server error!'
-                //             });
-
-                //             console.log(response);
-                //         }
-                //     });
-                // }
                 
             });
         });

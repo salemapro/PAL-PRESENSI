@@ -75,76 +75,6 @@
                 </div>
             </nav>
 
-            <!-- LOGIN FORM-->
-            <!-- <div class="modal fade" id="formLogin" data-backdrop="static" data-keyboard="false">
-                <div class="modal-dialog modal-dialog-centered" style="max-width: 350px;"> -->
-                    <!-- <form role="form" action="<?php echo base_url('presensi/login')?>">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Login as Administrator</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Username:</label>
-                                    <input type="text" class="form-control" id="exampleInputUser" name="username" placeholder="Username">
-                                    
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Password:</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword" name="password" placeholder="Password">
-                                </div>
-                            </div>     
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
-                    </form> -->
-                    <!-- <div class="modal-content">
-                        <div class="card-body login-card-body">
-                            <h4><b>Login as Administrator</b></h4>
-                            <br>
-                            <form action="<?php echo base_url('auth/login')?>" method="post">
-                                <div class="form-group">
-                                    <label for="inputUser">Username:</label>
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="username" id="inputUser" class="form-control" placeholder="Username" required>
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">
-                                                <span class="fas fa-user"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputPass">Password:</label>
-                                    <div class="input-group mb-3">
-                                        <input type="password" name="password" id="inputPass" class="form-control " placeholder="Password">
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">
-                                                <span class="fas fa-lock"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <button type="reset" class="btn btn-danger btn-block" data-dismiss="modal">Cancel</button>
-                                    </div>
-                                    <div class="col-6">
-                                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-
             <div class="content-wrapper">
                 <section class="content-header">
                     <div class="container">
@@ -242,8 +172,6 @@
                 </section>
             </div>
 
-            
-
             <!-- Footer -->
             <footer class="main-footer">
                 <div class="container">
@@ -255,6 +183,7 @@
                 </div>
             </footer>
         </div>
+        
         <div class="viewmodal" style="display: none;">
                 
         </div>
@@ -294,7 +223,7 @@
                             if (response.sukses){
                                 $('.viewmodal').html(response.sukses).show();
                                 $('#modalFormLogin').on('shown.bs.modal', function(e){
-                                    $('inputUser').focus();
+                                    $('#username').focus();
                                 })
                                 $('#modalFormLogin').modal('show');
                             }

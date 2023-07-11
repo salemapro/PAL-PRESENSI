@@ -9,6 +9,7 @@
             </div>
             <?php echo form_open('presensi/simpanDataRapat', ['class' => 'formSimpanRapat']) ?>
                 <div class="pesan" style="display: none;">
+                
                 </div>
                 <div class="modal-body">
                     <div class="form-group row">
