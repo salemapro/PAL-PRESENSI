@@ -4,11 +4,11 @@
                 <div class="card-body login-card-body">
                     <h4><b>Login as Administrator</b></h4>
                     <br>
-                    
+                    <?php echo form_open('login/cek_login', ['class' => 'formLogin']) ?>
                         <div class="form-group">
                             <label for="username">Username:</label>
                             <div class="input-group mb-3">
-                                <input type="text" id="username" class="form-control" placeholder="Username">
+                                <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-user"></span>
@@ -19,7 +19,7 @@
                         <div class="form-group">
                             <label for="password">Password:</label>
                             <div class="input-group mb-3">
-                                <input type="password" id="password" class="form-control" placeholder="Password">
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-lock"></span>
@@ -33,88 +33,128 @@
                                 <button type="reset" class="btn btn-danger btn-block" data-dismiss="modal">Cancel</button>
                             </div>
                             <div class="col-6">
-                                <button class="btn btn-login btn-primary btn-block">Sign In</button>
+                                <button type="submit" class="btn btn-login btn-primary btn-block">Sign In</button>
                             </div>
                         </div>
                     <!-- </form> -->
-                    
+                    <?php echo form_close() ?>
                 </div>
             </div>
         </div>
     </div>
     <script>
         $(document).ready(function(){
-
-            $('.btn-login').click(function(e){
-
-                var username = $("#username").val();
-                var password = $("#password").val();
-
-                if(username.length == ""){
-
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Oops...',
-                        text: 'Username Wajib diisi !'
-                    });
-
-                } else if (password.length == ""){
-
-                    Swal.fire({
-
-                        icon: 'warning',
-                        title: 'Oops...',
-                        text: 'Password Wajib diisi'
-                    });
-
-                } else {
-
-                    $.ajax({
-                        type: "post",
-                        url: "<?php echo base_url('login/cek_login') ?>",
-                        data: {
-                            username: username,
-                            password: password
-                        },
-                
-                        success: function(response){
-
-                            if (response == "success"){
-
-                                Swal.fire({
-                                    type: 'success',
-                                    title: 'Login Berhasil',
-                                    showCancelButton: false,
-                                    showConfirmButton: false
-                                })
-    
-                                .then (function(){
-                                    window.location.href = "<?php echo base_url('presensi/daftarRapat') ?>";
-                                });
-
-                            } else {
-
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Login Gagal',
-                                    text: 'silahkan coba lagi'
-                                });
-                            }
-
-                            console.log(response);
-                        },
-
-                        error:function(response){
+            $('.formLogin').submit(function(e){
+                // var username = $("#username").val();
+                // var password = $("#password").val();
+                $.ajax({
+                    type: "post",
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    dataType: "json",
+                    success: function(response){
+                        if (response.sukses){
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: response.sukses,
+                                showCancelButton: false,
+                                showConfirmButton: false,
+                                timer: '850'
+                            })
+                            .then (function(){
+                                window.location.href = "<?php echo base_url('presensi/daftarRapat') ?>";
+                            });
+                        } 
+                        if (response.error){
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Oops',
-                                text: 'server error!'
+                                title: 'Oops...',
+                                text: response.error
                             });
-
-                            console.log(response);
                         }
-                    });
-                }
+                    },
+                    error:function(response){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops',
+                            text: 'server error!'
+                        });
+
+                        console.log(response);
+                    },
+                    error: function(xhr, ajaxOptions, thrownError){
+                        alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+                    }
+                });
+                return false;
+                // if(username.length == ""){
+
+                //     Swal.fire({
+                //         icon: 'warning',
+                //         title: 'Oops...',
+                //         text: 'Username Wajib diisi !'
+                //     });
+
+                // } else if (password.length == ""){
+
+                //     Swal.fire({
+
+                //         icon: 'warning',
+                //         title: 'Oops...',
+                //         text: 'Password Wajib diisi'
+                //     });
+
+                // } else {
+
+                //     $.ajax({
+                //         type: "post",
+                //         url: $(this).attr('action'),
+                //         // data: {
+                //         //     username: username,
+                //         //     password: password
+                //         // },
+                //         data: $(this).serialize(),
+
+                //         success: function(response){
+
+                //             if (response == "success"){
+
+                //                 Swal.fire({
+                //                     type: 'success',
+                //                     title: 'Login Berhasil',
+                //                     showCancelButton: false,
+                //                     showConfirmButton: false
+                //                 })
+    
+                //                 .then (function(){
+                //                     window.location.href = "<?php echo base_url('presensi/daftarRapat') ?>";
+                //                 });
+
+                //             } else {
+
+                //                 Swal.fire({
+                //                     icon: 'error',
+                //                     title: 'Login Gagal',
+                //                     text: 'silahkan coba lagi'
+                //                 });
+                //             }
+
+                //             console.log(response);
+                //         },
+
+                //         error:function(response){
+                //             Swal.fire({
+                //                 icon: 'error',
+                //                 title: 'Oops',
+                //                 text: 'server error!'
+                //             });
+
+                //             console.log(response);
+                //         }
+                //     });
+                // }
+                
             });
         });
         

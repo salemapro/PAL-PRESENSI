@@ -173,9 +173,6 @@
 
             return row;
         }
-            
-        
-
     </script>
   </body>
 </html>

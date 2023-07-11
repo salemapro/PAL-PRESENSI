@@ -3,46 +3,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_login extends CI_model {
 
-    const SESSION_KEY = 'user_id';
-
-    // fungsi simpan data register
-    public function simpan_register($data) {
-
-        return $this->db->insert("tbl_admin", $data);
-
-    }
-
-    // fungsi cek login
-    public function cek_login($username, $password)
+    public function ambil_login($username, $password)
     {
-        // $this->db->select("*");
-        // $this->db->from("tbl_admin");
-        // $this->db->where("username", $username);
-        // $query = $this->db->get();
-        // $user = $query->row();
-        // $password = ($password);
-		$this->db->where('username', $username);
-		$query = $this->db->query("SELECT * FROM tbl_admin");
-		$user = $query->row();
-        /**
-         * Check password
-         */
-        if (!empty($user)) {
-            if (password_verify($password, $user->password)) {
-                return $query->result();
-            } else {
-                return FALSE;
+        $this->db->where('username', $username);
+        $this->db->where('password', $password);
+        $query = $this->db->get('tbl_admin');
+        if ($query->num_rows()>0){
+            foreach ($query->result() as $row){
+                $sess = array ('id' => $row -> id,
+                               'username' => $row -> username,
+                               'password' => $row -> password
+                );
             }
+        $this->session->get_userdata($sess);
+        // $this->_update_last_login($sess);
+        $msg = [
+            'sukses' => 'Login Berhasil'
+        ];
+        
         } else {
-            return FALSE;
+
+            $msg = [
+                'error' => 'Invalid username or password!'
+            ];
         }
 
+        echo json_encode($msg);
     }
 
-    public function logout()
-	{
-		$this->session->unset_userdata(self::SESSION_KEY);
-		return !$this->session->has_userdata(self::SESSION_KEY);
-	}
+    // private function _update_last_login($id)
+	// {
+	// 	$data = [
+	// 		'last_login' => date("YYYY-mm-dd HH:ii:ss"),
+	// 	];
+
+	// 	$this->db->query("UPDATE tbl_admin SET last_login = '$data' WHERE id = '$id'");
+	// }
 
 }

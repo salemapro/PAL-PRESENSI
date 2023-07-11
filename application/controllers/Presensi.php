@@ -11,7 +11,6 @@ class Presensi extends CI_Controller {
 		]);
 		$this->load->helper('url');
 		$this->load->model('M_presensi');
-		$this->load->model('M_auth');
 		$this->load->model('M_hadir');
 		// if (!$this->M_auth->current_user()) {
 		// 	redirect('Login/cek_login');
