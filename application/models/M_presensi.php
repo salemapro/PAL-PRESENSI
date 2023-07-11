@@ -12,5 +12,20 @@
             //print_r($query);
             //die();
         }
+
+        public function simpan($judul, $tempat, $tanggal, $waktu, $link, $id, $status)
+        {
+            $simpan = [
+                'judulRapat' => $judul,
+                'tempat' => $tempat,
+                'tanggal' => $tanggal,
+                'waktu' => $waktu,
+                'status' => $status,
+                'idZoom' => $id,
+                'link' => $link
+            ];
+
+            $this->db->insert('tbl_daftarrapat',$simpan);
+        }
     }
 ?>

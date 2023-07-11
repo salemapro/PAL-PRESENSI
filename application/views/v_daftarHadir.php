@@ -104,6 +104,15 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#dataHadir').hide();
+
+            $(function () {
+                $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                });
+        
+             });
+             
         });
 
         function cariPresensi() {
@@ -165,13 +174,7 @@
             return row;
         }
             
-        // $(function () {
-        //     $("#example1").DataTable({
-        //     "responsive": true,
-        //     "autoWidth": false,
-        //     });
         
-        // });
 
     </script>
   </body>
