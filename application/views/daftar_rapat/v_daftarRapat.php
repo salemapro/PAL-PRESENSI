@@ -55,11 +55,11 @@
                                                     <input type="checkbox" name="my-checkbox" data-bootstrap-switch data-off-color="danger" data-on-color="success" <?php echo $status ?> onchange="getStatusChanged(this, <?php echo $row->id; ?>);">
                                                 </td>
                                                 <td nowrap>
-                                                    <button title="Update" onclick="getRapat($id)" class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal">
+                                                    <button title="Update" class="btn btn-sm btn-success" onclick="getRapat(<?php echo $row->id; ?>);">
                                                         <i class="fa fa-edit"></i>
                                                     </button>
                                                     &nbsp;
-                                                    <button title="Delete" onclick="deleteConfirm($id)" class="btn btn-sm btn-danger">
+                                                    <button title="Delete" onclick="deleteConfirm(<?php echo $row->id; ?>);" class="btn btn-sm btn-danger">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </td>
@@ -121,23 +121,25 @@
 
         <!-- Toastr -->
         <script type="text/javascript" src="<?php echo base_url('assets/template/plugins/toastr/toastr.min.js'); ?>"></script>
+        
+        <!-- Page Script -->
+        <script type="text/javascript">
+            $(function() {
+                $("#example1").DataTable({
+                    "responsive": true,
+                    "autoWidth": false,
+                });
+            
+            });
+            
+            $("input[data-bootstrap-switch]").each(function() {
+                $(this).bootstrapSwitch('state');
+            });
+        </script>
 
-
-        <!-- SCRIPT -->
+        <!-- JQuery -->
         <script type="text/javascript">
             $(document).ready(function() {
-
-                $(function() {
-                    $("#example1").DataTable({
-                        "responsive": true,
-                        "autoWidth": false,
-                    });
-
-                });
-
-                $("input[data-bootstrap-switch]").each(function() {
-                    $(this).bootstrapSwitch('state');
-                });
 
                 $('#tambahRapat').click(function(e) {
                     $.ajax({
@@ -155,8 +157,28 @@
                     });
                 });
 
-
             });
+            
+            function getRapat(id){
+
+                $.ajax({
+                    type: "post",
+                    url: "<?php echo base_url('presensi/formEditRapat') ?>",
+                    data: {
+                        id: id,
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.sukses) {
+                            $('.viewmodal').html(response.sukses).show();
+                            $('#modalEditRapat').on('shown.bs.modal', function(e) {
+                                $('#inputJudul').focus();
+                            })
+                            $('#modalEditRapat').modal('show');
+                        }
+                    }
+                });
+            }
 
             function getStatusChanged(obj, id) {
                 var status = 0;
@@ -184,7 +206,45 @@
                     }
                 });
             }
-        </script>
-        </body>
 
-        </html>
+            function deleteConfirm(id){
+                Swal.fire({
+                    title: 'Delete',
+                    text: 'Yakin menghapus rapat?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus',
+                    cancelButtonText: 'Tidak'
+                }).then((result) => {
+                    if (result.value){
+                        $.ajax({
+                            type: "post",
+                            url: "<?php echo base_url('presensi/deleteRapat') ?>",
+                            data: {
+                                id: id,
+                            },
+                            dataType: "json",
+                            success: function(response){
+                                if(response.sukses){
+                                    Swal.fire ({
+                                        icon: 'success',
+                                        title: 'konfirmasi',
+                                        text: response.sukses,
+                                        showCancelButton: false,
+                                        showConfirmButton: false
+                                    });
+                                    setTimeout(function(){
+                                        location.reload();
+                                    }, 1000);
+                                }
+                            }
+                        });
+                    }
+                })
+            }
+
+        </script>
+    </body>
+</html>

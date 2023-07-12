@@ -62,7 +62,7 @@
                                 text: response.sukses,
                                 showCancelButton: false,
                                 showConfirmButton: false,
-                                timer: '850'
+                                timer: '1000'
                             })
                             .then (function(){
                                 window.location.href = "<?php echo base_url('presensi/daftarRapat') ?>";

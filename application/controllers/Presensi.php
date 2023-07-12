@@ -26,16 +26,16 @@ class Presensi extends CI_Controller
 
 	public function daftarRapat()
 	{
-		$data['presensi'] = $this->M_presensi->get_data();
+		$data['presensi'] = $this->M_presensi->get_data_rapat();
 		$this->load->view('v_header');
-		$this->load->view('v_daftarRapat', $data);
+		$this->load->view('daftar_rapat/v_daftarRapat', $data);
 	}
 
 	public function daftarHadir()
 	{
 		$data['presensi'] = $this->M_presensi->get_data();
 		$this->load->view('v_header');
-		$this->load->view('v_daftarHadir', $data);
+		$this->load->view('daftar_hadir/v_daftarHadir', $data);
 	}
 
 	public function get_presensi()
@@ -49,7 +49,36 @@ class Presensi extends CI_Controller
 	{
 		if ($this->input->is_ajax_request() == true) {
 			$msg = [
-				'sukses' => $this->load->view('v_modalTambahRapat', '', true)
+				'sukses' => $this->load->view('daftar_rapat/v_modalTambahRapat', '', true)
+			];
+			echo json_encode($msg);
+		}
+	}
+
+	public function formEditRapat()
+	{
+		if ($this->input->is_ajax_request() == true) {
+			$id = $this->input->post('id', true);
+
+			$ambildata = $this->M_presensi->data_rapat($id);
+			
+			if($ambildata->num_rows() > 0){
+				$row = $ambildata->row_array();
+				$data = [
+					'id' => $id,
+					'judul' => $row['judulRapat'],
+					'tempat' => $row['tempat'],
+					'tanggal' => $row['tanggal'],
+					'waktu' => $row['waktu'],
+					'status' => $row['status'],
+					'idZoom' => $row['idZoom'],
+					'link' => $row['link']
+						
+				];
+			}
+
+			$msg = [
+				'sukses' => $this->load->view('daftar_rapat/v_modalEditRapat', $data, true)
 			];
 			echo json_encode($msg);
 		}
@@ -63,7 +92,7 @@ class Presensi extends CI_Controller
 			$tanggal = $this->input->post('tanggal', true);
 			$waktu = $this->input->post('waktu', true);
 			$link = $this->input->post('link', true);
-			$id = $this->input->post('id', true);
+			$idZoom = $this->input->post('idZoom', true);
 			$status = $this->input->post('status', true);
 
 			$this->form_validation->set_rules(
@@ -77,16 +106,14 @@ class Presensi extends CI_Controller
 			);
 
 			if ($this->form_validation->run() == TRUE) {
-				$this->M_presensi->simpan($judul, $tempat, $tanggal, $waktu, $link, $id, $status);
+				$this->M_presensi->simpan($judul, $tempat, $tanggal, $waktu, $link, $idZoom, $status);
 
 				$msg = [
 					'sukses' => 'data rapat berhasil disimpan'
 				];
 			} else {
 				$msg = [
-					'error' => '<div class="alert alert-danger" role="alert">
-									' . validation_errors() . '
-				  				</div>'
+					'error' => validation_errors()
 				];
 			}
 
@@ -111,6 +138,44 @@ class Presensi extends CI_Controller
 			$retcode = $this->M_presensi->update_rapat($id, [
 				'status' => $this->input->post('status')
 			]);
+		}
+	}
+
+	public function updateDataRapat()
+	{
+		if ($this->input->is_ajax_request() == true) {
+			$id = $this->input->post('id', true);
+			$judul = $this->input->post('judul', true);
+			$tempat = $this->input->post('tempat', true);
+			$tanggal = $this->input->post('tanggal', true);
+			$waktu = $this->input->post('waktu', true);
+			$link = $this->input->post('link', true);
+			$idZoom = $this->input->post('idZoom', true);
+			$status = $this->input->post('status', true);
+			
+			$this->M_presensi->update($id, $judul, $tempat, $tanggal, $waktu, $link, $idZoom, $status);
+
+			$msg = [
+				'sukses' => 'data rapat berhasil di update'
+			];
+
+			echo json_encode($msg);
+		}
+	}
+
+	public function deleteRapat()
+	{
+		if ($this->input->is_ajax_request() == true) {
+			$id = $this->input->post('id', true);
+
+			$delete = $this->M_presensi->delete($id);
+
+			if($delete){
+				$msg = [
+					'sukses' => 'Rapat Berhasil Terhapus'
+				];
+			}
+			echo json_encode($msg);
 		}
 	}
 }
