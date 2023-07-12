@@ -27,5 +27,11 @@
 
             $this->db->insert('tbl_daftarrapat',$simpan);
         }
+
+        public function update_rapat($id, $data) {
+            $this->db->where('id', $id);
+            $this->db->update('tbl_daftarrapat', $data);
+            $retcode = $this->db->affected_rows();
+            return $retcode;
+        }
     }
-?>
