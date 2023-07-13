@@ -27,7 +27,7 @@
                                     <option value="0" selected="" disabled="">-- Pilih Rapat --</option>                                    
                                     <?php
                                         foreach ($presensi as $row) :
-                                            echo "<option value='$row->id'>$row->judulRapat | $row->tanggal, $row->waktu</option>";
+                                            echo "<option value='$row->id'>$row->judulRapat | " . date('d F Y', strtotime($row->tanggal)) . " Pukul $row->waktu</option>";
                                         endforeach;
                                     ?>
                                 </select>
@@ -205,6 +205,66 @@
                         }
                     }
                 });
+            }
+
+            function getRapat(id){
+                var id_rapat = $('#jenis_rapat').val();
+                $.ajax({
+                    type: "post",
+                    url: "<?php echo base_url('presensi/formEditHadir') ?>",
+                    data: {
+                        id: id,
+                        id_rapat: id_rapat
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.sukses) {
+                            $('.viewmodal').html(response.sukses).show();
+                            $('#modalEditHadir').on('shown.bs.modal', function(e) {
+                                $('#inputJudul').focus();
+                            })
+                            $('#modalEditHadir').modal('show');
+                        }
+                    }
+                });                                                                                     
+            }
+
+            function deleteConfirm(id){
+                Swal.fire({
+                    title: 'Delete ',
+                    text: 'Yakin menghapus Data Hadir?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus',
+                    cancelButtonText: 'Tidak'
+                }).then((result) => {
+                    if (result.value){
+                        $.ajax({
+                            type: "post",
+                            url: "<?php echo base_url('presensi/deleteHadir') ?>",
+                            data: {
+                                id: id,
+                            },
+                            dataType: "json",
+                            success: function(response){
+                                if(response.sukses){
+                                    Swal.fire ({
+                                        icon: 'success',
+                                        title: 'konfirmasi',
+                                        text: response.sukses,
+                                        showCancelButton: false,
+                                        showConfirmButton: false
+                                    });
+                                    setTimeout(function(){
+                                        location.reload();
+                                    }, 1000);
+                                }
+                            }
+                        });
+                    }
+                })
             }
             
         </script>

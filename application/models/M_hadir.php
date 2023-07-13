@@ -27,18 +27,45 @@ class M_hadir extends CI_Model
     }
 
     public function simpan($id_rapat, $nip, $nama, $jabatan, $unit, $intansi, $email, $attendance)
-        {
-            $simpan = [
-                'id_Rapat' => $id_rapat,
-                'nip' => $nip,
-                'namaLengkap' => $nama,
-                'jabatan' => $jabatan,
-                'unit' => $unit,
-                'intansi' => $intansi,
-                'email' => $email,
-                'attendance' => $attendance
-            ];
+    {
+        $simpan = [
+            'id_Rapat' => $id_rapat,
+            'nip' => $nip,
+            'namaLengkap' => $nama,
+            'jabatan' => $jabatan,
+            'unit' => $unit,
+            'intansi' => $intansi,
+            'email' => $email,
+            'attendance' => $attendance
+        ];
 
-            $this->db->insert('tbl_daftarhadir',$simpan);
-        }
+        $this->db->insert('tbl_daftarhadir',$simpan);
+    }
+
+    public function data_hadir($id, $id_rapat)
+    {
+        return $this->db->get_where('tbl_daftarhadir',['id' => $id, 'id_Rapat' =>$id_rapat ]);
+    }
+
+    public function update($id, $id_rapat, $nip, $nama, $jabatan, $unit, $intansi, $email, $attendance)
+    {
+        $update = [
+            'id_Rapat' => $id_rapat,
+            'nip' => $nip,
+            'namaLengkap' => $nama,
+            'jabatan' => $jabatan,
+            'unit' => $unit,
+            'intansi' => $intansi,
+            'email' => $email,
+            'attendance' => $attendance
+        ];
+
+        $this->db->where('id', $id);
+        $this->db->update('tbl_daftarhadir',$update);
+    }
+
+    public function delete($id)
+    {
+        return $this->db->delete('tbl_daftarhadir', ['id' => $id]);
+    }
 }
