@@ -33,7 +33,7 @@ class Presensi extends CI_Controller
 
 	public function daftarHadir()
 	{
-		$data['presensi'] = $this->M_presensi->get_data();
+		$data['presensi'] = $this->M_presensi->get_data_rapat();
 		$this->load->view('v_header');
 		$this->load->view('daftar_hadir/v_daftarHadir', $data);
 	}
@@ -51,6 +51,22 @@ class Presensi extends CI_Controller
 			$msg = [
 				'sukses' => $this->load->view('daftar_rapat/v_modalTambahRapat', '', true)
 			];
+			echo json_encode($msg);
+		}
+	}
+	public function formTambahHadir()
+	{
+		if ($this->input->is_ajax_request() == true) {
+			$id_rapat = $this->input->post('id_rapat',true);
+
+			$data = [
+				'id_rapat' => $id_rapat
+			];
+
+			$msg = [
+				'sukses' => $this->load->view('daftar_hadir/v_modalTambahHadir', $data , true)
+			];
+
 			echo json_encode($msg);
 		}
 	}
@@ -79,6 +95,37 @@ class Presensi extends CI_Controller
 
 			$msg = [
 				'sukses' => $this->load->view('daftar_rapat/v_modalEditRapat', $data, true)
+			];
+			echo json_encode($msg);
+		}
+	}
+
+	public function formEditHadir()
+	{
+		if ($this->input->is_ajax_request() == true) {
+			$id = $this->input->post('id', true);
+			$id_rapat = $this->input->post('id_rapat',true);
+
+			$ambildata = $this->M_hadir->data_hadir($id, $id_rapat);
+			
+			if($ambildata->num_rows() > 0){
+				$row = $ambildata->row_array();
+				$data = [
+					'id' => $id,
+					'id_rapat' => $id_rapat,
+					'nip' => $row['nip'],
+					'nama' => $row['namaLengkap'],
+					'jabatan' => $row['jabatan'],
+					'unit' => $row['unit'],
+					'intansi' => $row['intansi'],
+					'email' => $row['email'],
+					'attendance' => $row['attendance']
+						
+				];
+			}
+
+			$msg = [
+				'sukses' => $this->load->view('daftar_hadir/v_modalEditHadir', $data, true)
 			];
 			echo json_encode($msg);
 		}
@@ -121,6 +168,44 @@ class Presensi extends CI_Controller
 		}
 	}
 
+	public function simpanDataHadir()
+	{
+		if ($this->input->is_ajax_request() == true) {
+			$id_rapat = $this->input->post('id_rapat', true);
+			$nip = $this->input->post('nip', true);
+			$nama = $this->input->post('nama', true);
+			$jabatan = $this->input->post('jabatan', true);
+			$unit = $this->input->post('unit', true);
+			$intansi = $this->input->post('intansi', true);
+			$email = $this->input->post('email', true);
+			$attendance = $this->input->post('attendance', true);
+
+			$this->form_validation->set_rules(
+				'nip',
+				'NIP',
+				'trim|required[tbl_daftarhadir.nip]',
+				[
+					'required' => '%s tidak boleh kosong'
+					
+				]
+			);
+
+			if ($this->form_validation->run() == TRUE) {
+				$this->M_hadir->simpan($id_rapat, $nip, $nama, $jabatan, $unit, $intansi, $email, $attendance);
+
+				$msg = [
+					'sukses' => 'data hadir berhasil disimpan'
+				];
+			} else {
+				$msg = [
+					'error' => validation_errors()
+				];
+			}
+
+			echo json_encode($msg);
+		}
+	}
+
 	public function formLogin()
 	{
 		if ($this->input->is_ajax_request() == true) {
@@ -152,15 +237,55 @@ class Presensi extends CI_Controller
 			$link = $this->input->post('link', true);
 			$idZoom = $this->input->post('idZoom', true);
 			$status = $this->input->post('status', true);
-			
-			$this->M_presensi->update($id, $judul, $tempat, $tanggal, $waktu, $link, $idZoom, $status);
 
-			$msg = [
-				'sukses' => 'data rapat berhasil di update'
-			];
+			$this->form_validation->set_rules(
+				'judul',
+				'Judul Rapat',
+				'trim|required[tbl_daftarrapat.judulRapat]',
+				[
+					'required' => '%s tidak boleh kosong',
+				]
+			);
+
+			if ($this->form_validation->run() == TRUE) {
+				$this->M_presensi->update($id, $judul, $tempat, $tanggal, $waktu, $link, $idZoom, $status);
+
+				$msg = [
+					'sukses' => 'data rapat berhasil di-update'
+				];
+			} else {
+				$msg = [
+					'error' => validation_errors()
+				];
+			}
 
 			echo json_encode($msg);
 		}
+	}
+
+	public function updateDataHadir()
+	{
+		if ($this->input->is_ajax_request() == true) {
+			$id = $this->input->post('id', true);
+			$id_rapat = $this->input->post('id_rapat', true);
+			$nip = $this->input->post('nip', true);
+			$nama = $this->input->post('nama', true);
+			$jabatan = $this->input->post('jabatan', true);
+			$unit = $this->input->post('unit', true);
+			$intansi = $this->input->post('intansi', true);
+			$email = $this->input->post('email', true);
+			$attendance = $this->input->post('attendance', true);
+
+			
+			$this->M_hadir->update($id, $id_rapat, $nip, $nama, $jabatan, $unit, $intansi, $email, $attendance);
+
+			$msg = [
+				'sukses' => 'data hadir berhasil di-update'
+			];
+		}
+
+		echo json_encode($msg);
+		
 	}
 
 	public function deleteRapat()
@@ -169,6 +294,22 @@ class Presensi extends CI_Controller
 			$id = $this->input->post('id', true);
 
 			$delete = $this->M_presensi->delete($id);
+
+			if($delete){
+				$msg = [
+					'sukses' => 'Rapat Berhasil Terhapus'
+				];
+			}
+			echo json_encode($msg);
+		}
+	}
+
+	public function deleteHadir()
+	{
+		if ($this->input->is_ajax_request() == true) {
+			$id = $this->input->post('id', true);
+
+			$delete = $this->M_hadir->delete($id);
 
 			if($delete){
 				$msg = [

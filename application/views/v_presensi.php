@@ -101,7 +101,7 @@
                                     <option value="0" selected="" disabled="">-- Pilih Rapat --</option>
                                     <?php
                                         foreach ($presensi as $row) :
-                                            echo "<option value='' $row->id'>$row->judulRapat | " . date('d F Y', strtotime($row->tanggal)) . " Pukul $row->waktu</option>";
+                                            echo "<option value='$row->id'>$row->judulRapat | " . date('d F Y', strtotime($row->tanggal)) . " Pukul $row->waktu</option>";
                                         endforeach;
                                     ?>
                                 </select>
@@ -249,7 +249,6 @@
                 //         // Swal.fire('Information', 'Saat ini tidak ada rapat yang tersedia', 'info');
                 //     }
                 // });
-
 
                 $('#divInput').hide();
 

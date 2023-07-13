@@ -27,7 +27,7 @@
                                     <option value="0" selected="" disabled="">-- Pilih Rapat --</option>                                    
                                     <?php
                                         foreach ($presensi as $row) :
-                                            echo "<option value='$row->id'>$row->judulRapat | $row->tanggal, $row->waktu</option>";
+                                            echo "<option value='$row->id'>$row->judulRapat | " . date('d F Y', strtotime($row->tanggal)) . " Pukul $row->waktu</option>";
                                         endforeach;
                                     ?>
                                 </select>
@@ -35,11 +35,11 @@
                         </div>
                         <div id="dataHadir" class="card card-primary card-outline">
                             <div class="card-header">
-                                <h3 class="card-title">Daftar Rapat</h3>
+                                <h3 class="card-title">Daftar Hadir</h3>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="fa fa-plus"></i> New Entry</button>
+                                    <button class="btn btn-sm btn-primary" id="tambahHadir" onclick="tambahHadir()"> <i class="fa fa-plus"></i> New Entry</button>
                                 </div>
                                 <table id="example1" class="table table-bordered table-hover">
                                     <thead align="center">
@@ -65,14 +65,17 @@
                 </section>
             </div>
             <footer class="main-footer">
-            <div class="container">
-                <div class="float-right d-none d-sm-block">
-                <b>Version</b> 1.0
+                <div class="container">
+                    <div class="float-right d-none d-sm-block">
+                    <b>Version</b> 1.0
+                    </div>
+                    <strong>Copyright &copy; 2023 <a href="#">Salema.io</a>.</strong> All rights
+                    reserved.
                 </div>
-                <strong>Copyright &copy; 2023 <a href="#">Salema.io</a>.</strong> All rights
-                reserved.
-            </div>
             </footer>
+            <div class="viewmodal" style="display: none;">
+
+            </div>
         </div>
         <!-- ./wrapper -->
 
@@ -99,6 +102,12 @@
 
         <!-- AdminLTE for demo purposes -->
         <script type="text/javascript" src="<?php echo base_url('assets/template')?>/dist/js/demo.js"></script>
+
+        <!-- Toastr -->
+        <script type="text/javascript" src="<?php echo base_url('assets/template/plugins/toastr/toastr.min.js'); ?>"></script>
+
+        <!-- SweetAlert2 -->
+        <script src="<?php echo base_url('assets/template') ?>/plugins/sweetalert2/sweetalert2.min.js"></script>
 
         <!-- Page Script -->
         <script type="text/javascript">
@@ -174,6 +183,88 @@
                     '</td></tr>');
 
                 return row;
+            }
+
+            function tambahHadir(){
+                var id_rapat = $('#jenis_rapat').val();
+                // $("#id_rapat").val($("#jenis_rapat").val());
+                $.ajax({
+                    type: "post",
+                    url: "<?php echo base_url('presensi/formTambahHadir') ?>",
+                    data: {
+                        id_rapat: id_rapat
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.sukses) {
+                            $('.viewmodal').html(response.sukses).show();
+                            $('#modalTambahHadir').on('shown.bs.modal', function(e) {
+                                $('#inputJudul').focus();
+                            })
+                            $('#modalTambahHadir').modal('show');
+                        }
+                    }
+                });
+            }
+
+            function getRapat(id){
+                var id_rapat = $('#jenis_rapat').val();
+                $.ajax({
+                    type: "post",
+                    url: "<?php echo base_url('presensi/formEditHadir') ?>",
+                    data: {
+                        id: id,
+                        id_rapat: id_rapat
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.sukses) {
+                            $('.viewmodal').html(response.sukses).show();
+                            $('#modalEditHadir').on('shown.bs.modal', function(e) {
+                                $('#inputJudul').focus();
+                            })
+                            $('#modalEditHadir').modal('show');
+                        }
+                    }
+                });                                                                                     
+            }
+
+            function deleteConfirm(id){
+                Swal.fire({
+                    title: 'Delete ',
+                    text: 'Yakin menghapus Data Hadir?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus',
+                    cancelButtonText: 'Tidak'
+                }).then((result) => {
+                    if (result.value){
+                        $.ajax({
+                            type: "post",
+                            url: "<?php echo base_url('presensi/deleteHadir') ?>",
+                            data: {
+                                id: id,
+                            },
+                            dataType: "json",
+                            success: function(response){
+                                if(response.sukses){
+                                    Swal.fire ({
+                                        icon: 'success',
+                                        title: 'konfirmasi',
+                                        text: response.sukses,
+                                        showCancelButton: false,
+                                        showConfirmButton: false
+                                    });
+                                    setTimeout(function(){
+                                        location.reload();
+                                    }, 1000);
+                                }
+                            }
+                        });
+                    }
+                })
             }
             
         </script>
