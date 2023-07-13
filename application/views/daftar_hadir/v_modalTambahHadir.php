@@ -92,10 +92,10 @@
                                 showCancelButton: false,
                                 showConfirmButton: false
                             });
-                            // $('#modalTambahHadir').modal('hide');
-                            // setTimeout(function(){
-                            //     location.reload();
-                            // }, 2000);
+                            $('#modalTambahHadir').modal('hide');
+                            setTimeout(function(){
+                                location.reload();
+                            }, 2000);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError){
