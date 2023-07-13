@@ -1,67 +1,65 @@
-<div class="modal fade" id="modalEditRapat" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="modalTambahHadir" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Ubah Data Rapat</h4>
+              <h4 class="modal-title">Tambah Data Hadir</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <?php echo form_open('presensi/updateDataRapat', ['class' => 'formUpdateRapat']) ?>
+            <?php echo form_open('presensi/simpanDataHadir', ['class' => 'formSimpanHadir']) ?>
                 <div class="pesan" style="display: none;">
 
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="id" value="<?= $id; ?>">
+                    <input type="hidden" name="id_rapat" id="id_rapat" value="<?= $id_rapat; ?>">
+                    <input type="hidden" name="id" id="id">
                     <div class="form-group row">
-                        <label for="inputJudul" class="col-sm-3 col-form-label">Judul Rapat</label>
+                        <label for="inputNip" class="col-sm-3 col-form-label">NIP</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputJudul" name="judul" value="<?php echo $judul ?>">
+                            <input type="text" class="form-control" id="inputNip" name="nip">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputTempat" class="col-sm-3 col-form-label">Tempat</label>
+                        <label for="inputNama" class="col-sm-3 col-form-label">Nama Lengkap</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputTempat" name="tempat" value="<?php echo $tempat ?>">
+                            <input type="text" class="form-control" id="inputNama" name="nama">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputTanggal" class="col-sm-3 col-form-label">Tanggal</label>
+                        <label for="inputJabatan" class="col-sm-3 col-form-label">Jabatan</label>
                         <div class="col-sm-9">
-                            <input type="date" class="form-control" id="inputTanggal" name="tanggal" value="<?php echo $tanggal ?>">
+                            <input type="text" class="form-control" id="inputJabatan" name="jabatan">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputWaktu" class="col-sm-3 col-form-label">Waktu</label>
+                        <label for="inputUnit" class="col-sm-3 col-form-label">Unit</label>
                         <div class="col-sm-9">
-                            <input type="time" class="form-control" id="inputWaktu" name="waktu" value="<?php echo $waktu ?>">
+                            <input type="text" class="form-control" id="inputUnit" name="unit">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputLink" class="col-sm-3 col-form-label">Link Zoom/Gmeet</label>
+                        <label for="inputIntansi" class="col-sm-3 col-form-label">Instansi</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputLink" name="link" value="<?php echo $link ?>">
+                            <input type="text" class="form-control" id="inputIntansi" name="intansi">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputId" class="col-sm-3 col-form-label">Id Zoom/Gmeet</label>
+                        <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputId" name="idZoom" value="<?php echo $idZoom ?>">
+                            <input type="email" class="form-control" id="inputEmail" name="email">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                        <label for="inputAttend" class="col-sm-3 col-form-label">Attendance</label>
                         <div class="col-sm-9">
-                            <select class="form-control select text-sm" id="inputStatus" name="status" required="">
-                                <option value="1" <?php if($status == '1') echo 'selected'; ?>>[1] Aktif </option>
-                                <option value="0" <?php if($status == '0') echo 'selected'; ?>> [0] Non-Aktif </option>
-                            </select>
+                            <input type="datetime-local" class="form-control" id="inputAttend" name="attendance">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             <?php echo form_close() ?>
           </div>
@@ -73,7 +71,8 @@
 
     <script>
         $(document).ready(function(){
-            $('.formUpdateRapat').submit(function(e){
+            $('.formSimpanHadir').submit(function(e){
+                
                 $.ajax({
                     type: "post",
                     url: $(this).attr('action'),
@@ -85,7 +84,7 @@
                             toastr.error(response.error);
                         }
 
-                        if (response.sukses){ 
+                        if (response.sukses){
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Berhasil',
@@ -93,10 +92,10 @@
                                 showCancelButton: false,
                                 showConfirmButton: false
                             });
-                            // $('#modalEditRapat').modal('hide');
-                            setTimeout(function(){
-                                location.reload();
-                            }, 1200);
+                            // $('#modalTambahHadir').modal('hide');
+                            // setTimeout(function(){
+                            //     location.reload();
+                            // }, 2000);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError){

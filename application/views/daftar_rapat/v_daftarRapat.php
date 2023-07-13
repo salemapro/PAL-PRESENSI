@@ -165,7 +165,7 @@
                     type: "post",
                     url: "<?php echo base_url('presensi/formEditRapat') ?>",
                     data: {
-                        id: id,
+                        id: id
                     },
                     dataType: "json",
                     success: function(response) {
@@ -209,7 +209,7 @@
 
             function deleteConfirm(id){
                 Swal.fire({
-                    title: 'Delete',
+                    title: 'Delete ',
                     text: 'Yakin menghapus rapat?',
                     icon: 'warning',
                     showCancelButton: true,

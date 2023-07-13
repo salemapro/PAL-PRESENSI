@@ -25,4 +25,20 @@ class M_hadir extends CI_Model
         $this->db->where('id_Rapat', $id_rapat);
         return $this->db->get()->result();
     }
+
+    public function simpan($id_rapat, $nip, $nama, $jabatan, $unit, $intansi, $email, $attendance)
+        {
+            $simpan = [
+                'id_Rapat' => $id_rapat,
+                'nip' => $nip,
+                'namaLengkap' => $nama,
+                'jabatan' => $jabatan,
+                'unit' => $unit,
+                'intansi' => $intansi,
+                'email' => $email,
+                'attendance' => $attendance
+            ];
+
+            $this->db->insert('tbl_daftarhadir',$simpan);
+        }
 }

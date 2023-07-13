@@ -59,9 +59,9 @@
                 'idZoom' => $idZoom,
                 'link' => $link
             ];
+
             $this->db->where('id', $id);
-            $this->db->update('tbl_daftarrapat', $update);
-            
+            $this->db->update('tbl_daftarrapat',$update);
         }
 
         public function delete($id)
